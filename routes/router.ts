@@ -18,7 +18,7 @@ export class Router {
     setClientRoutes(): void {
         this._router.get("/client/text", this._clientRoutes.getText)
     }
-    getRoutes(): express.Router {
+    get router(): express.Router {
         return this._router
     }
 

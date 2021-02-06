@@ -2,22 +2,29 @@ import express from 'express';
 import mongoose from 'mongoose';
 import * as path from 'path';
 import config from "./config/config";
-import {  mongoInstance } from './database/db-connection';
+import { mongoInstance } from './database/db-connection';
 import { Router } from "./routes/router"
 
 
 
 class App {
+
   private _app: express.Application;
   private _port: string;
-  private _router;
+  private _routes: Router;
   private _db: mongoose.Connection
 
   constructor() {
     this._app = express()
     this._port = config.port;
-    this._router = new Router()
-    this._app.use(express.static(path.join(__dirname, '/web-app')))
+    this._routes = new Router();
+    this._app.use(express.static(path.join(__dirname, '/web-app')));
+    this.setCors();
+    this.runServer();
+    this._app.all("*", this._routes.router);
+    this._db = mongoInstance.connection;
+  }
+  setCors(): void {
     this._app.use(function (req, res, next) {
 
       // Website you wish to allow to connect
@@ -38,10 +45,7 @@ class App {
 
     });
 
-    this._app.use("/", this._router.getRoutes())
 
-    this.runServer();
-    this._db = mongoInstance.connection;
   }
 
   private runServer(): void {

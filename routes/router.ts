@@ -3,23 +3,23 @@ import { AdminRoutes } from './admin'
 import { ClientRoutes } from './client'
 
 export class Router {
-    private _router: express.Router
-    private _adminRoutes = new AdminRoutes()
-    private _clientRoutes = new ClientRoutes()
+    private _router: express.Router = express.Router();
+    private _adminRoutes = new AdminRoutes();
+    private _clientRoutes = new ClientRoutes();
+    private _app: express.Application;
 
-    constructor() {
-        this._router = express.Router()
-        this.setClientRoutes()
-        this.setAdminRoutes()
+    constructor(app: express.Application) {
+        this._app = app;
+        this.setRoutes();
     }
-    setAdminRoutes(): void {
-        this._router.get("/admin/text", this._adminRoutes.getText)
+
+    setRoutes(): void {
+        this._app.use("/admin", this._adminRoutes.router);
+        this._app.use("/client", this._clientRoutes.router);
     }
-    setClientRoutes(): void {
-        this._router.get("/client/text", this._clientRoutes.getText)
-    }
+
     get router(): express.Router {
-        return this._router
+        return this._router;
     }
 
 }

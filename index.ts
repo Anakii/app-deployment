@@ -17,9 +17,9 @@ class App {
   constructor() {
     this._app = express()
     this._port = config.port;
-    this._routes = new Router();
-    this._app.use(express.static(path.join(__dirname, '/web-app')));
     this.setCors();
+    this._routes = new Router(this._app);
+    this._app.use(express.static(path.join(__dirname, '/web-app')));
     this.runServer();
     this._app.all("*", this._routes.router);
     this._db = mongoInstance.connection;

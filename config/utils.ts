@@ -8,5 +8,8 @@ export interface DefaultEnviormentConfig {
 export interface EnviormentConfig {
     nodeEnv: string;
     port: string;
+    mongoUser:string;
+    mongoPass:string;
+    mongoDBName:string;
     allowedOrigins: string | string[]
 }

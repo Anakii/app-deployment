@@ -14,4 +14,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.productionConfig = void 0;
 var default_1 = require("./default");
 var utils_1 = require("./utils");
-exports.productionConfig = __assign(__assign({}, default_1.defaultEnv), { nodeEnv: utils_1.NodeEnvEnum.production, allowedOrigins: "https://my-domain:" + default_1.defaultEnv.port, mongoDBName: 'deploy-prod', mongoPass: 'or_1234', mongoUser: 'or_1234' });
+exports.productionConfig = __assign(__assign({}, default_1.defaultEnv), { nodeEnv: utils_1.NodeEnvEnum.production, allowedOrigins: "*", mongoDBName: 'deploy-prod', mongoPass: 'or_1234', mongoUser: 'or_1234' });

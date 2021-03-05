@@ -56,9 +56,9 @@ class App {
   }
   private runUi(): void {
 
-    // this._app.get('/', (req, res) => {
-    //   res.sendFile(`${__dirname}/web-app/index.html`);
-    // });
+    this._app.get('/', (req, res) => {
+      res.sendFile(`${__dirname}/web-app/index.html`);
+    });
 
   }
 

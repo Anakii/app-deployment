@@ -25,11 +25,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var path = __importStar(require("path"));
 var config_1 = __importDefault(require("./config/config"));
+var db_connection_1 = require("./database/db-connection");
+var router_1 = require("./routes/router");
 var App = /** @class */ (function () {
     function App() {
         this._app = express_1.default();
         this._port = config_1.default.port;
+        this.setCors();
+        this._routes = new router_1.Router(this._app);
         this._app.use(express_1.default.static(path.join(__dirname, '/web-app')));
+        this.runServer();
+        this._app.all("*", this._routes.router);
+        this._db = db_connection_1.mongoInstance.connection;
+    }
+    App.prototype.setCors = function () {
         this._app.use(function (req, res, next) {
             // Website you wish to allow to connect
             res.setHeader('Access-Control-Allow-Origin', config_1.default.allowedOrigins);
@@ -43,8 +52,7 @@ var App = /** @class */ (function () {
             // Pass to next layer of middleware
             next();
         });
-        this.runServer();
-    }
+    };
     App.prototype.runServer = function () {
         var _this = this;
         this._app.listen(this._port, function () {
@@ -53,11 +61,8 @@ var App = /** @class */ (function () {
         this.runUi();
     };
     App.prototype.runUi = function () {
-        // this._app.get('/', (req, res) => {
-        //   res.sendFile(`${__dirname}/web-app/index.html`);
-        // });
-        this._app.get('/text', function (req, res) {
-            res.json({ res: "rwwrwree" });
+        this._app.get('/', function (req, res) {
+            res.sendFile(__dirname + "/web-app/index.html");
         });
     };
     return App;
